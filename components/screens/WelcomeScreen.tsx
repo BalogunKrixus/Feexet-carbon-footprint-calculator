@@ -40,17 +40,19 @@ export function WelcomeScreen({ onNext }: Props) {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative z-10 w-full max-w-lg"
       >
-        {/* Logo mark */}
+        {/* Logo */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="flex items-center gap-2 mb-12"
+          className="flex items-center gap-3 mb-12"
         >
-          <div className="w-8 h-8 rounded-lg bg-teal flex items-center justify-center">
-            <span className="text-navy text-sm font-bold">G</span>
-          </div>
-          <span className="text-off-white/60 font-body text-sm tracking-wide">GreenPrint by Feexet</span>
+          <img
+            src="/logo.svg"
+            alt="GreenPrint"
+            className="h-10 w-auto"
+          />
+          <span className="text-off-white/50 font-body text-sm tracking-wide">by Feexet</span>
         </motion.div>
 
         <motion.h1
