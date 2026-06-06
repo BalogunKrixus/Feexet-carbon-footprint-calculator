@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useStore } from "@/store/store";
 import { StepLayout } from "@/components/ui/StepLayout";
 import { Button } from "@/components/ui/Button";
+import { Dropdown } from "@/components/ui/Dropdown";
 import { NIGERIAN_STATES, STATE_CITIES, DEFAULT_CITIES } from "@/config/questions";
 
 interface Props {
@@ -22,6 +23,9 @@ export function LocationScreen({ onNext, onBack }: Props) {
 
   const cities = state ? (STATE_CITIES[state] || DEFAULT_CITIES) : [];
 
+  const stateOptions = NIGERIAN_STATES.map((s) => ({ value: s, label: s }));
+  const cityOptions = cities.map((c) => ({ value: c, label: c }));
+
   const handleContinue = () => {
     if (!state) return;
     setLocation(state, city || cities[0] || "");
@@ -30,7 +34,10 @@ export function LocationScreen({ onNext, onBack }: Props) {
 
   return (
     <StepLayout accent="#05A7B4">
-      <button onClick={onBack} className="text-off-white/40 font-body text-sm mb-8 hover:text-off-white/70 transition-colors flex items-center gap-1">
+      <button
+        onClick={onBack}
+        className="text-off-white/40 font-body text-sm mb-8 hover:text-off-white/70 transition-colors flex items-center gap-1"
+      >
         ← Back
       </button>
 
@@ -44,16 +51,12 @@ export function LocationScreen({ onNext, onBack }: Props) {
           <label className="block font-body text-off-white/50 text-xs uppercase tracking-widest mb-2">
             State
           </label>
-          <select
+          <Dropdown
             value={state}
-            onChange={(e) => { setState(e.target.value); setCity(""); }}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-off-white font-body text-sm focus:outline-none focus:border-teal/60 transition-all appearance-none cursor-pointer"
-          >
-            <option value="" className="bg-navy">Select your state…</option>
-            {NIGERIAN_STATES.map((s) => (
-              <option key={s} value={s} className="bg-navy">{s}</option>
-            ))}
-          </select>
+            onChange={(val) => { setState(val); setCity(""); }}
+            options={stateOptions}
+            placeholder="Select your state…"
+          />
         </div>
 
         {state && (
@@ -61,16 +64,12 @@ export function LocationScreen({ onNext, onBack }: Props) {
             <label className="block font-body text-off-white/50 text-xs uppercase tracking-widest mb-2">
               City or area
             </label>
-            <select
+            <Dropdown
               value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-off-white font-body text-sm focus:outline-none focus:border-teal/60 transition-all appearance-none cursor-pointer"
-            >
-              <option value="" className="bg-navy">Select city…</option>
-              {cities.map((c) => (
-                <option key={c} value={c} className="bg-navy">{c}</option>
-              ))}
-            </select>
+              onChange={setCity}
+              options={cityOptions}
+              placeholder="Select city…"
+            />
           </div>
         )}
       </div>
