@@ -71,7 +71,7 @@ export function WelcomeScreen({ onNext }: Props) {
           transition={{ delay: 0.35 }}
           className="font-body text-off-white/60 text-base mb-10 leading-relaxed"
         >
-          See what your everyday life costs the planet — and your pocket.
+          See what your everyday life costs the planet and your pocket.
           About&nbsp;3&nbsp;minutes. No sign&nbsp;up.
         </motion.p>
 

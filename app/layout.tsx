@@ -9,7 +9,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "GreenPrint — Know your carbon footprint",
+  title: "GreenPrint: Know your carbon footprint",
   description: "A personalised carbon footprint calculator built for the Nigerian community by Feexet.",
   keywords: ["carbon footprint", "Nigeria", "climate", "sustainability", "Feexet"],
 };

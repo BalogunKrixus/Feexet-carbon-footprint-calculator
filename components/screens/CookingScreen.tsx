@@ -79,7 +79,7 @@ export function CookingScreen({ onNext, onBack }: Props) {
         <p className="font-body text-off-white/70 text-sm font-medium mb-1">
           Anything else you use sometimes? <span className="text-off-white/40">(optional)</span>
         </p>
-        <p className="font-body text-off-white/40 text-xs mb-3">Fuel stacking is common — select all that apply.</p>
+        <p className="font-body text-off-white/40 text-xs mb-3">Fuel stacking is common. Select all that apply.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {secondaryOptions.map((opt) => (
             <OptionCard

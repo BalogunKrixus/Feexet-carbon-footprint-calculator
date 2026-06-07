@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "@/store/store";
 import { selectActions } from "@/engine/recommend";
 import { Button } from "@/components/ui/Button";
 import type { Action } from "@/content/actions";
+import type { Result } from "@/store/state";
 
 interface Props {
   onBack: () => void;
@@ -23,14 +25,49 @@ function formatNaira(n: number): string {
   return `₦${n.toLocaleString()}`;
 }
 
-function ActionCard({ action, added, onToggle }: { action: Action; added: boolean; onToggle: () => void }) {
+function calcCommitment(actions: Action[], addedIds: string[]) {
+  const selected = actions.filter((a) => addedIds.includes(a.id));
+  return {
+    count: selected.length,
+    kgSaved: selected.reduce((s, a) => s + a.kgSavedPerYear, 0),
+    nairaSaved: selected.reduce((s, a) => s + a.nairaSavedPerYear, 0),
+    titles: selected.map((a) => a.title),
+  };
+}
+
+function buildCommitmentShareText(result: Result, commitment: ReturnType<typeof calcCommitment>): string {
+  if (commitment.count === 0) {
+    return `My carbon footprint is ${result.totalTonnesCo2PerYear}t CO₂/year. I calculated it with GreenPrint by Feexet.\n\ngreenprint.feexet.com`;
+  }
+  const newTonnes = Math.max(0, result.totalTonnesCo2PerYear - commitment.kgSaved / 1000).toFixed(1);
+  const actionList = commitment.titles.map((t) => `✅ ${t}`).join("\n");
+  return (
+    `My carbon footprint is ${result.totalTonnesCo2PerYear}t CO₂/year.\n\n` +
+    `I’m committing to:\n${actionList}\n\n` +
+    `This will cut my footprint to ${newTonnes}t and save ${formatNaira(commitment.nairaSaved)}/yr!\n\n` +
+    `Calculate yours 👇\ngreenprint.feexet.com`
+  );
+}
+
+
+function ActionCard({
+  action,
+  committed,
+  onToggle,
+}: {
+  action: Action;
+  committed: boolean;
+  onToggle: () => void;
+}) {
   const effort = EFFORT_LABELS[action.effort];
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-2xl border p-5 transition-all duration-200 ${added ? "border-teal/40 bg-teal/5" : "border-white/10 bg-white/5"}`}
+      className={`rounded-2xl border p-5 transition-all duration-200 ${
+        committed ? "border-teal/40 bg-teal/5" : "border-white/10 bg-white/5"
+      }`}
     >
       <div className="flex items-start gap-4">
         <div className="text-3xl flex-shrink-0">{action.icon}</div>
@@ -44,7 +81,7 @@ function ActionCard({ action, added, onToggle }: { action: Action; added: boolea
           <p className="font-body text-off-white/50 text-xs leading-relaxed mb-3">{action.description}</p>
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-mono text-off-white/60 text-xs">
-              −{Math.round(action.kgSavedPerYear / 10) / 100}t CO₂/yr
+              {Math.round(action.kgSavedPerYear / 10) / 100}t CO₂/yr saved
             </span>
             {action.nairaSavedPerYear > 0 && (
               <>
@@ -61,11 +98,13 @@ function ActionCard({ action, added, onToggle }: { action: Action; added: boolea
         <button
           onClick={onToggle}
           className={`w-full py-2.5 rounded-xl font-body text-sm font-medium transition-all duration-150
-            ${added
-              ? "bg-teal/20 text-teal border border-teal/40"
-              : "bg-white/8 text-off-white/70 border border-white/10 hover:bg-white/15"}`}
+            ${
+              committed
+                ? "bg-teal/20 text-teal border border-teal/40"
+                : "bg-white/8 text-off-white/70 border border-white/10 hover:bg-white/15"
+            }`}
         >
-          {added ? "✓ Added to my plan" : "+ Add to my plan"}
+          {committed ? "✓ Committed" : "Commit to this"}
         </button>
       </div>
     </motion.div>
@@ -79,9 +118,27 @@ export function ActionsScreen({ onBack, onReset }: Props) {
   const rotationSeed = useStore((s) => s.rotationSeed);
   const toggleAction = useStore((s) => s.toggleAction);
 
+  const [copied, setCopied] = useState<"commitment" | "score" | null>(null);
+
   if (!result) return null;
 
   const actions = selectActions(result, rotationSeed);
+  const commitment = calcCommitment(actions, addedActions);
+  const newTonnes = Math.max(0, result.totalTonnesCo2PerYear - commitment.kgSaved / 1000);
+
+  const handleShare = async (text: string, title: string, type: "commitment" | "score") => {
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ title, text });
+      } catch {
+        // User cancelled share — do nothing
+      }
+    } else if (typeof navigator !== "undefined" && navigator.clipboard) {
+      await navigator.clipboard.writeText(text);
+      setCopied(type);
+      setTimeout(() => setCopied(null), 2500);
+    }
+  };
 
   return (
     <div className="min-h-dvh px-5 py-16 flex flex-col">
@@ -91,62 +148,80 @@ export function ActionsScreen({ onBack, onReset }: Props) {
       </div>
 
       <div className="relative z-10 w-full max-w-lg mx-auto flex flex-col flex-1">
-        <button onClick={onBack} className="text-off-white/40 font-body text-sm mb-8 hover:text-off-white/70 transition-colors self-start flex items-center gap-1">
+        <button
+          onClick={onBack}
+          className="text-off-white/40 font-body text-sm mb-8 hover:text-off-white/70 transition-colors self-start flex items-center gap-1"
+        >
           ← Back
         </button>
 
         <h2 className="font-display text-4xl text-off-white mb-1">Your quickest wins,</h2>
         <h2 className="font-display text-4xl text-amber mb-2">{firstName}.</h2>
         <p className="font-body text-off-white/50 text-sm mb-8">
-          Ranked by impact on your footprint.{" "}
-          {addedActions.length > 0 && (
-            <span className="text-teal">{addedActions.length} added to your plan.</span>
-          )}
+          Commit to the ones you will actually try. We will calculate your impact.
         </p>
 
+        {/* Action cards */}
         <div className="space-y-4">
           {actions.map((action) => (
             <ActionCard
               key={action.id}
               action={action}
-              added={addedActions.includes(action.id)}
+              committed={addedActions.includes(action.id)}
               onToggle={() => toggleAction(action.id)}
             />
           ))}
         </div>
 
-        {addedActions.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-6 bg-lime/10 border border-lime/30 rounded-2xl px-5 py-4"
-          >
-            <p className="font-body text-lime text-sm font-medium">
-              {addedActions.length} action{addedActions.length > 1 ? "s" : ""} in your plan.
-            </p>
-            <p className="font-body text-off-white/50 text-xs mt-0.5">
-              Saved to your device — come back any time to track progress.
-            </p>
-          </motion.div>
-        )}
+        {/* Commitment summary — appears when ≥1 action committed */}
+        <AnimatePresence>
+          {commitment.count > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.98 }}
+              transition={{ duration: 0.25 }}
+              className="mt-6 bg-lime/10 border border-lime/30 rounded-2xl px-5 py-4"
+            >
+              <p className="font-body text-lime text-sm font-semibold mb-1">
+                🎯 Your commitment
+              </p>
+              <p className="font-body text-off-white/60 text-xs leading-relaxed mb-1">
+                Cut{" "}
+                <span className="text-lime font-semibold">
+                  {(commitment.kgSaved / 1000).toFixed(1)}t CO₂
+                </span>{" "}
+                and save{" "}
+                <span className="text-lime font-semibold">
+                  {formatNaira(commitment.nairaSaved)}/yr
+                </span>
+                {" "}if you follow through on{" "}
+                {commitment.count === 1 ? "this change" : `these ${commitment.count} changes`}.
+              </p>
+              {commitment.kgSaved > 0 && (
+                <p className="font-body text-off-white/35 text-xs mb-3">
+                  Your footprint: {result.totalTonnesCo2PerYear}t → {newTonnes.toFixed(1)}t CO₂/yr
+                </p>
+              )}
+              <Button
+                variant="secondary"
+                fullWidth
+                onClick={() =>
+                  handleShare(
+                    buildCommitmentShareText(result, commitment),
+                    "My GreenPrint commitment",
+                    "commitment"
+                  )
+                }
+              >
+                {copied === "commitment" ? "Copied ✓" : "Share my commitment →"}
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <div className="mt-8 space-y-3 pb-8">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-            <p className="font-body text-off-white/70 text-sm font-medium mb-1">🌍 That&apos;s your GreenPrint.</p>
-            <p className="font-body text-off-white/40 text-xs mb-4">
-              Share it with friends and spread the word. Every conversation counts.
-            </p>
-            <Button variant="secondary" fullWidth onClick={() => {
-              if (typeof navigator !== "undefined" && navigator.share) {
-                navigator.share({
-                  title: "My GreenPrint",
-                  text: `My carbon footprint is ${result.totalTonnesCo2PerYear}t CO₂/year — I calculated it with GreenPrint by Feexet.`,
-                });
-              }
-            }}>
-              Share my GreenPrint
-            </Button>
-          </div>
+        {/* Bottom section */}
+        <div className="mt-6 pb-8">
           <Button variant="ghost" onClick={onReset} fullWidth>
             Start over
           </Button>

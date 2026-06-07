@@ -23,7 +23,7 @@ const MAIN_MODES = [
 
 const CAR_FUEL = [
   { value: "light", label: "Light (under 15L/week)", icon: "🪣" },
-  { value: "moderate", label: "Moderate (15–35L/week)", icon: "⛽" },
+  { value: "moderate", label: "Moderate (15 to 35L/week)", icon: "⛽" },
   { value: "heavy", label: "Heavy (35L+ per week)", icon: "🛢️" },
 ] as const;
 
@@ -35,7 +35,7 @@ const INTERSTATE = [
 
 const FLIGHTS = [
   { value: "none", label: "No flights", icon: "🏠" },
-  { value: "one-two", label: "1–2 flights", icon: "✈️" },
+  { value: "one-two", label: "1 to 2 flights", icon: "✈️" },
   { value: "several", label: "3 or more flights", icon: "🌍" },
 ] as const;
 

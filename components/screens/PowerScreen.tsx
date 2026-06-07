@@ -13,8 +13,8 @@ interface Props {
 }
 
 const GRID_HOURS = [
-  { value: "almost-none", label: "Almost none (0–2 hrs)", icon: "🔌" },
-  { value: "a-few", label: "A few hours (2–5 hrs)", icon: "💡" },
+  { value: "almost-none", label: "Almost none (0 to 2 hrs)", icon: "🔌" },
+  { value: "a-few", label: "A few hours (2 to 5 hrs)", icon: "💡" },
   { value: "half-day", label: "About half the day", icon: "🌤️" },
   { value: "most-day", label: "Most of the day (10+ hrs)", icon: "☀️" },
 ] as const;
@@ -27,15 +27,15 @@ const GEN_TYPES = [
 
 const FUEL_BANDS = [
   { value: "a-few", label: "A few litres (under 10L)", icon: "🪣" },
-  { value: "jerry-can", label: "A jerry can or two (10–40L)", icon: "🛢️" },
-  { value: "two-cans", label: "Two to four jerry cans (40–80L)", icon: "🛢️🛢️" },
+  { value: "jerry-can", label: "A jerry can or two (10 to 40L)", icon: "🛢️" },
+  { value: "two-cans", label: "Two to four jerry cans (40 to 80L)", icon: "🛢️🛢️" },
   { value: "drum", label: "A drum or more (80L+)", icon: "⛽" },
 ] as const;
 
 const SOLAR_COVERAGE = [
-  { value: 25, label: "A little (25%)" },
-  { value: 50, label: "About half (50%)" },
-  { value: 75, label: "Most of it (75%)" },
+  { value: 25, label: "Fans and lights only", sub: "covers about 25%" },
+  { value: 50, label: "About half our home", sub: "covers about 50%" },
+  { value: 75, label: "Most appliances run on it", sub: "covers about 75%" },
 ] as const;
 
 export function PowerScreen({ onNext, onBack }: Props) {
@@ -72,12 +72,12 @@ export function PowerScreen({ onNext, onBack }: Props) {
       <div className="mb-2 text-2xl">⚡</div>
       <h2 className="font-display text-4xl text-off-white mb-1">Let&apos;s talk power.</h2>
       <p className="font-body text-off-white/50 text-base mb-8">
-        Be honest — most homes run more than one source.
+        Be honest, most homes run more than one source.
       </p>
 
       <div className="mb-6">
         <p className="font-body text-off-white/70 text-sm font-medium mb-3">
-          Grid power you actually get on a normal day:
+          How many hours of NEPA light do you get a day on average?
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {GRID_HOURS.map((opt) => (
@@ -142,7 +142,7 @@ export function PowerScreen({ onNext, onBack }: Props) {
       )}
 
       <div className="mb-6">
-        <p className="font-body text-off-white/70 text-sm font-medium mb-3">Solar or inverter?</p>
+        <p className="font-body text-off-white/70 text-sm font-medium mb-3">Do you have solar panels or an inverter at home?</p>
         <div className="flex gap-2 mb-3">
           {[true, false].map((v) => (
             <button
@@ -155,16 +155,20 @@ export function PowerScreen({ onNext, onBack }: Props) {
           ))}
         </div>
         {hasSolar && (
-          <div className="grid grid-cols-3 gap-2">
-            {SOLAR_COVERAGE.map((opt) => (
-              <button
-                key={opt.value}
-                onClick={() => setSolarPct(opt.value)}
-                className={`py-2.5 rounded-xl font-body text-xs font-medium border transition-all ${solarPct === opt.value ? "bg-lime/20 border-lime text-lime" : "bg-white/5 border-white/10 text-off-white/60"}`}
-              >
-                {opt.label}
-              </button>
-            ))}
+          <div>
+            <p className="font-body text-off-white/40 text-xs mb-2">How much of your power does it cover?</p>
+            <div className="space-y-2">
+              {SOLAR_COVERAGE.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => setSolarPct(opt.value)}
+                  className={`w-full px-4 py-3 rounded-xl font-body text-sm font-medium border transition-all text-left flex items-center justify-between ${solarPct === opt.value ? "bg-lime/20 border-lime text-lime" : "bg-white/5 border-white/10 text-off-white/60"}`}
+                >
+                  <span>{opt.label}</span>
+                  <span className={`text-xs font-normal ${solarPct === opt.value ? "text-lime/60" : "text-off-white/25"}`}>{opt.sub}</span>
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>

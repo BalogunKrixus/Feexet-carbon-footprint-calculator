@@ -98,32 +98,34 @@ export function BreakdownScreen({ onNext, onBack }: Props) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.08 }}
             >
-              <button
-                onClick={() => setExpanded(expanded === cat.category ? null : cat.category)}
-                className="w-full text-left"
-              >
-                <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 hover:bg-white/8 transition-all">
-                  <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: cat.color }} />
-                  <span className="font-body font-medium text-off-white flex-1 text-sm">{cat.label}</span>
-                  <div className="text-right">
-                    <div className="font-mono text-xs text-off-white/60">{cat.sharePercent}%</div>
-                    <DualLedger kg={cat.kgCo2PerYear} naira={cat.nairaPerYear} />
-                  </div>
-                  <span className="text-off-white/30 ml-2 text-xs">{expanded === cat.category ? "▲" : "▼"}</span>
-                </div>
-              </button>
-
-              {expanded === cat.category && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  className="bg-white/3 border border-white/8 rounded-b-xl px-4 py-3 -mt-1"
+              <div className={`rounded-xl border overflow-hidden transition-colors duration-150 ${expanded === cat.category ? "border-white/20" : "border-white/10"}`}>
+                <button
+                  onClick={() => setExpanded(expanded === cat.category ? null : cat.category)}
+                  className="w-full text-left bg-white/5 hover:bg-white/8 transition-colors duration-150"
                 >
-                  <p className="font-body text-off-white/60 text-xs leading-relaxed">
-                    {EXPLANATIONS[cat.category] || "This area contributes to your overall footprint."}
-                  </p>
-                </motion.div>
-              )}
+                  <div className="flex items-center gap-3 px-4 py-3.5">
+                    <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: cat.color }} />
+                    <span className="font-body font-medium text-off-white flex-1 text-sm">{cat.label}</span>
+                    <div className="text-right">
+                      <div className="font-mono text-xs text-off-white/60">{cat.sharePercent}%</div>
+                      <DualLedger kg={cat.kgCo2PerYear} naira={cat.nairaPerYear} />
+                    </div>
+                    <span className="text-off-white/30 ml-2 text-xs">{expanded === cat.category ? "▲" : "▼"}</span>
+                  </div>
+                </button>
+
+                {expanded === cat.category && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    className="border-t border-white/10 bg-white/3 px-4 py-3"
+                  >
+                    <p className="font-body text-off-white/60 text-xs leading-relaxed">
+                      {EXPLANATIONS[cat.category] || "This area contributes to your overall footprint."}
+                    </p>
+                  </motion.div>
+                )}
+              </div>
             </motion.div>
           ))}
         </div>
@@ -131,7 +133,7 @@ export function BreakdownScreen({ onNext, onBack }: Props) {
         <div className="mt-6 bg-teal/10 border border-teal/30 rounded-2xl px-5 py-4">
           <p className="font-body text-off-white/80 text-sm leading-relaxed">
             <span className="text-teal font-semibold">{result.dominantDriverLabel}</span> is your biggest.{" "}
-            Good news — it&apos;s also where you can save the most.
+            Good news, it&apos;s also where you can save the most.
           </p>
         </div>
 
