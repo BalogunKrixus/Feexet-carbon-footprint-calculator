@@ -1,0 +1,14 @@
+# Treat font and image binaries as binary — never apply line-ending conversion.
+# (LF/CRLF normalization on a binary file corrupts it, which broke our woff2.)
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary
+*.eot    binary
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.ico    binary
+*.webp   binary
+*.pdf    binary
