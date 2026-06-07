@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Cal Sans";
+  src: url("/fonts/CalSans-SemiBold.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Explicit override — Tailwind v4 confuses --font-display token with the
+   CSS font-display property, generating font-display instead of font-family.
+   This rule ensures all .font-display elements always use Cal Sans. */
+.font-display {
+  font-family: "Cal Sans", system-ui, sans-serif;
+}
+
 
 :root {
   --color-navy: #093350;

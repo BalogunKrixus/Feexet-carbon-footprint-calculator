@@ -2,12 +2,37 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Zap, Wrench, Clock, Sun, Lightbulb,
+  PersonStanding, Bus, Settings, Flame, ChefHat, Leaf,
+  UtensilsCrossed, ShoppingCart, Shirt, Smartphone, CircleOff, Sprout,
+} from "lucide-react";
 import { useStore } from "@/store/store";
 import { selectActions } from "@/engine/recommend";
 import { generateAndPrintReport } from "@/engine/report";
 import { Button } from "@/components/ui/Button";
 import type { Action } from "@/content/actions";
 import type { Result } from "@/store/state";
+
+const ACTION_ICONS: Record<string, React.ReactNode> = {
+  "gen-hours-reduce":   <Zap size={22} />,
+  "gen-service":        <Wrench size={22} />,
+  "shift-grid-hours":   <Clock size={22} />,
+  "small-inverter":     <Sun size={22} />,
+  "led-bulbs":          <Lightbulb size={22} />,
+  "reduce-car-trips":   <PersonStanding size={22} />,
+  "danfo-more":         <Bus size={22} />,
+  "car-maintenance":    <Settings size={22} />,
+  "switch-to-gas":      <Flame size={22} />,
+  "pressure-cooker":    <ChefHat size={22} />,
+  "firewood-gas":       <Leaf size={22} />,
+  "less-beef":          <UtensilsCrossed size={22} />,
+  "local-food":         <ShoppingCart size={22} />,
+  "buy-okrika":         <Shirt size={22} />,
+  "repair-electronics": <Smartphone size={22} />,
+  "stop-burning":       <CircleOff size={22} />,
+  "compost-organic":    <Sprout size={22} />,
+};
 
 interface Props {
   onBack: () => void;
@@ -71,7 +96,9 @@ function ActionCard({
       }`}
     >
       <div className="flex items-start gap-4">
-        <div className="text-3xl flex-shrink-0">{action.icon}</div>
+        <div className={`flex-shrink-0 mt-0.5 ${committed ? "text-teal" : "text-off-white/40"}`}>
+          {ACTION_ICONS[action.id] ?? <Zap size={22} />}
+        </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <h3 className="font-body font-semibold text-off-white text-sm">{action.title}</h3>
