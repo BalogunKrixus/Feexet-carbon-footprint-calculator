@@ -37,14 +37,14 @@ const FOOD_ORIGIN = [
     icon: "🧺",
   },
   {
-    value: "mixed",
-    label: "A mix of both",
-    icon: "🛒",
-  },
-  {
     value: "mostly-imported",
     label: "Mostly supermarkets or imported",
     icon: "📦",
+  },
+  {
+    value: "mixed",
+    label: "A mix of local markets and supermarkets",
+    icon: "🛒",
   },
 ] as const;
 
@@ -119,7 +119,7 @@ export function FoodScreen({ onNext, onBack }: Props) {
 
       <div className="mb-6">
         <p className="font-body text-off-white/70 text-sm font-medium mb-3">
-          Where does most of your food come from?
+          Where does most of your food come from, local markets or supermarkets?
         </p>
         <div className="space-y-2">
           {FOOD_ORIGIN.map((opt) => (

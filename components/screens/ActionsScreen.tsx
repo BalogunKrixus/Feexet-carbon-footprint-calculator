@@ -222,47 +222,35 @@ export function ActionsScreen({ onBack, onReset }: Props) {
           )}
         </AnimatePresence>
 
-        {/* Download report */}
-        <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-5">
-          <p className="font-body text-off-white/70 text-sm font-semibold mb-1">
-            📄 Download your full report
-          </p>
-          <p className="font-body text-off-white/40 text-xs mb-4 leading-relaxed">
-            A detailed PDF with your footprint breakdown, data sources, methodology, and action plan.
-          </p>
-          <Button
-            variant="secondary"
-            fullWidth
-            onClick={() => generateAndPrintReport(storeState, result, actions, addedActions)}
-          >
-            Download my GreenPrint report
-          </Button>
-        </div>
-
-        {/* Community CTA */}
-        <div className="mt-3 bg-teal/8 border border-teal/20 rounded-2xl p-5">
-          <p className="text-2xl mb-2">🌱</p>
-          <p className="font-body font-semibold text-off-white text-sm mb-1">
-            Join the Feexet Green community
-          </p>
-          <p className="font-body text-off-white/50 text-xs mb-4 leading-relaxed">
-            Connect with other Nigerians taking their footprint seriously. Tips, wins, and real accountability.
-          </p>
-          <a
-            href="https://chat.whatsapp.com/feexet-green"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full py-3 rounded-xl font-body text-sm font-medium bg-teal/20 text-teal border border-teal/30 text-center hover:bg-teal/30 transition-all duration-150"
-          >
-            Join the community →
-          </a>
-        </div>
-
         {/* Bottom section */}
-        <div className="mt-3 pb-8">
+        <div className="mt-6 pb-32">
           <Button variant="ghost" onClick={onReset} fullWidth>
             Start over
           </Button>
+        </div>
+      </div>
+
+      {/* Sticky bottom bar — always visible */}
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <div className="bg-[#041c2b]/95 backdrop-blur-md border-t border-white/10 px-4 py-3">
+          <div className="max-w-lg mx-auto flex gap-3">
+            <button
+              onClick={() => generateAndPrintReport(storeState, result, actions, addedActions)}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-body text-sm font-medium bg-white/8 text-off-white/80 border border-white/12 hover:bg-white/14 transition-all duration-150"
+            >
+              <span>📄</span>
+              <span>Download report</span>
+            </button>
+            <a
+              href="https://chat.whatsapp.com/KFoflVZTi2ZLx1EShJ74gG"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-body text-sm font-medium bg-teal/15 text-teal border border-teal/30 hover:bg-teal/25 transition-all duration-150"
+            >
+              <span>🌱</span>
+              <span>Join community</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>

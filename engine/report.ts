@@ -212,7 +212,7 @@ export function generateAndPrintReport(
     <table style="width:100%;border-collapse:collapse">
       <tr>
         <td style="padding:12px 0;border-bottom:1px solid #1e293b;color:#94a3b8;font-size:14px">${result.benchmarks.localLabel} typical</td>
-        <td style="padding:12px 0;border-bottom:1px solid #1e293b;text-align:right;color:#f1f5f9;font-size:14px;font-weight:600">${result.benchmarks.localTypical}t</td>
+        <td style="padding:12px 0;border-bottom:1px solid #1e293b;text-align:right;color:#f1f5f9;font-size:14px;font-weight:600">${Number(result.benchmarks.localTypical).toFixed(1)}t</td>
         <td style="padding:12px 0;border-bottom:1px solid #1e293b;text-align:right;font-size:13px;padding-left:16px;${result.totalTonnesCo2PerYear > result.benchmarks.localTypical ? "color:#F2A93B" : "color:#BCEC30"}">
           ${result.totalTonnesCo2PerYear > result.benchmarks.localTypical
             ? `+${Math.round((result.totalTonnesCo2PerYear / result.benchmarks.localTypical - 1) * 100)}% above`
@@ -221,7 +221,7 @@ export function generateAndPrintReport(
       </tr>
       <tr>
         <td style="padding:12px 0;border-bottom:1px solid #1e293b;color:#94a3b8;font-size:14px">1.5°C fair share target</td>
-        <td style="padding:12px 0;border-bottom:1px solid #1e293b;text-align:right;color:#f1f5f9;font-size:14px;font-weight:600">${result.benchmarks.fairShare}t</td>
+        <td style="padding:12px 0;border-bottom:1px solid #1e293b;text-align:right;color:#f1f5f9;font-size:14px;font-weight:600">${Number(result.benchmarks.fairShare).toFixed(1)}t</td>
         <td style="padding:12px 0;border-bottom:1px solid #1e293b;text-align:right;font-size:13px;padding-left:16px;${result.totalTonnesCo2PerYear > result.benchmarks.fairShare ? "color:#F2A93B" : "color:#BCEC30"}">
           ${result.totalTonnesCo2PerYear > result.benchmarks.fairShare
             ? `+${Math.round((result.totalTonnesCo2PerYear / result.benchmarks.fairShare - 1) * 100)}% above target`
@@ -230,7 +230,7 @@ export function generateAndPrintReport(
       </tr>
       <tr>
         <td style="padding:12px 0;color:#94a3b8;font-size:14px">Global average</td>
-        <td style="padding:12px 0;text-align:right;color:#f1f5f9;font-size:14px;font-weight:600">${result.benchmarks.globalAverage}t</td>
+        <td style="padding:12px 0;text-align:right;color:#f1f5f9;font-size:14px;font-weight:600">${Number(result.benchmarks.globalAverage).toFixed(1)}t</td>
         <td style="padding:12px 0;text-align:right;font-size:13px;padding-left:16px;${result.totalTonnesCo2PerYear > result.benchmarks.globalAverage ? "color:#F2A93B" : "color:#BCEC30"}">
           ${result.totalTonnesCo2PerYear > result.benchmarks.globalAverage
             ? `+${Math.round((result.totalTonnesCo2PerYear / result.benchmarks.globalAverage - 1) * 100)}% above global`
