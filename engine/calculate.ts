@@ -219,12 +219,14 @@ export function calculate(state: GreenPrintState): Result {
 
   const cityLC = profile.city.toLowerCase();
   const stateLC = profile.state.toLowerCase();
-  const localTypical =
+  const localTypicalRaw =
     stateLC.includes("lagos") || cityLC.includes("lagos")
       ? FACTORS.benchmarks.lagosTypical
       : stateLC.includes("fct") || cityLC.includes("abuja")
       ? FACTORS.benchmarks.abujaTypical
       : FACTORS.benchmarks.nigeriaAverage * 3;
+  // Round to 1 decimal to avoid floating-point artefacts like 1.7999999999998
+  const localTypical = Math.round(localTypicalRaw * 10) / 10;
 
   const benchmarks: BenchmarkSet = {
     localTypical,

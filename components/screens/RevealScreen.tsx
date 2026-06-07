@@ -49,7 +49,7 @@ function getVerdict(tonnes: number, b: BenchmarkSet): Verdict {
       textColor: "text-lime",
       borderColor: "border-lime/30",
       bgColor: "bg-lime/10",
-      desc: `Well below the 1.5°C fair share of ${b.fairShare}t. You are doing better than most.`,
+      desc: `Well below the 1.5°C fair share of ${b.fairShare.toFixed(1)}t. You are doing better than most.`,
     };
   }
   if (tonnes <= b.fairShare) {
@@ -59,7 +59,7 @@ function getVerdict(tonnes: number, b: BenchmarkSet): Verdict {
       textColor: "text-lime",
       borderColor: "border-lime/30",
       bgColor: "bg-lime/10",
-      desc: `Within the 1.5°C fair share of ${b.fairShare}t. You are doing well.`,
+      desc: `Within the 1.5°C fair share of ${b.fairShare.toFixed(1)}t. You are doing well.`,
     };
   }
   if (tonnes <= b.localTypical * 0.88) {
@@ -69,7 +69,7 @@ function getVerdict(tonnes: number, b: BenchmarkSet): Verdict {
       textColor: "text-teal",
       borderColor: "border-teal/30",
       bgColor: "bg-teal/10",
-      desc: `Below the typical household in ${b.localLabel} (${b.localTypical}t). Room to improve still.`,
+      desc: `Below the typical household in ${b.localLabel} (${b.localTypical.toFixed(1)}t). Room to improve still.`,
     };
   }
   if (tonnes <= b.localTypical * 1.15) {
@@ -89,7 +89,7 @@ function getVerdict(tonnes: number, b: BenchmarkSet): Verdict {
       textColor: "text-amber",
       borderColor: "border-amber/30",
       bgColor: "bg-amber/10",
-      desc: `Above average for ${b.localLabel}, but still below the global average of ${b.globalAverage}t.`,
+      desc: `Above average for ${b.localLabel}, but still below the global average of ${b.globalAverage.toFixed(1)}t.`,
     };
   }
   return {
@@ -98,7 +98,7 @@ function getVerdict(tonnes: number, b: BenchmarkSet): Verdict {
     textColor: "text-red-400",
     borderColor: "border-red-400/30",
     bgColor: "bg-red-400/10",
-    desc: `Above the global average of ${b.globalAverage}t per person. There is a lot of room to bring this down.`,
+    desc: `Above the global average of ${b.globalAverage.toFixed(1)}t per person. There is a lot of room to bring this down.`,
   };
 }
 
@@ -169,7 +169,7 @@ function ComparisonRow({
         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
         <span className="font-body text-off-white/60 text-xs truncate">{label}</span>
         {tooltip && <InfoTooltip text={tooltip} />}
-        <span className="font-mono text-off-white/25 text-xs flex-shrink-0">{benchmark}t</span>
+        <span className="font-mono text-off-white/25 text-xs flex-shrink-0">{benchmark.toFixed(1)}t</span>
       </div>
       <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border flex-shrink-0 ml-2 ${badgeClass}`}>
         {badge}
