@@ -43,7 +43,7 @@ export const JOURNEY_STEPS = [
 export type JourneyStep = typeof JOURNEY_STEPS[number];
 
 export const PHASE1_STEPS: JourneyStep[] = [
-  "welcome", "location", "household", "power", "transport", "cooking",
+  "welcome", "location", "household", "power", "transport", "cooking", "food",
   "calculating", "reveal", "breakdown", "actions",
 ];
 

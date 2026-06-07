@@ -10,13 +10,14 @@ import { HouseholdScreen } from "@/components/screens/HouseholdScreen";
 import { PowerScreen } from "@/components/screens/PowerScreen";
 import { TransportScreen } from "@/components/screens/TransportScreen";
 import { CookingScreen } from "@/components/screens/CookingScreen";
+import { FoodScreen } from "@/components/screens/FoodScreen";
 import { CalculatingScreen } from "@/components/screens/CalculatingScreen";
 import { RevealScreen } from "@/components/screens/RevealScreen";
 import { BreakdownScreen } from "@/components/screens/BreakdownScreen";
 import { ActionsScreen } from "@/components/screens/ActionsScreen";
 
 const STEP_ORDER = [
-  "welcome", "location", "household", "power", "transport", "cooking",
+  "welcome", "location", "household", "power", "transport", "cooking", "food",
   "calculating", "reveal", "breakdown", "actions",
 ] as const;
 
@@ -72,6 +73,9 @@ export function JourneyController() {
         )}
         {currentStep === "cooking" && (
           <CookingScreen key="cooking" onNext={goNext} onBack={goBack} />
+        )}
+        {currentStep === "food" && (
+          <FoodScreen key="food" onNext={goNext} onBack={goBack} />
         )}
         {currentStep === "calculating" && (
           <CalculatingScreen key="calculating" onNext={goNext} />

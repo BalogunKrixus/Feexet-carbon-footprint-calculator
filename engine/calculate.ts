@@ -47,37 +47,47 @@ function calcPower(power: PowerAnswers | undefined, householdSize: number): { kg
 }
 
 // --- Transport ---
+// km/week baselines by mode for non-car commuters (GHG Protocol urban Nigeria estimate)
+const MODE_KM_PER_WEEK: Record<string, number> = {
+  "ride-hail":  80,   // similar range to car, typically urban
+  "danfo-brt":  60,   // shared, covers similar distances
+  "keke":       40,   // shorter trips
+  "okada":      50,   // medium-range trips
+  "walk":        0,   // zero tailpipe emissions
+};
+
 function calcTransport(transport: TransportAnswers | undefined): { kg: number; naira: number } {
   if (!transport) return { kg: 0, naira: 0 };
 
   let kg = 0;
   let naira = 0;
-  const kmPerWeek = 100; // daily commute baseline
-
-  const modeEmission: Record<string, number> = {
-    "own-car": f.emission.carPetrolPerKm,
-    "ride-hail": f.emission.ridehailPerKm,
-    "danfo-brt": f.emission.danfoPerKm,
-    "keke": f.emission.kekePerKm,
-    "okada": f.emission.okadaPerKm,
-    "walk": 0,
-  };
-
-  const kmPerYear = kmPerWeek * 52;
-  kg += kmPerYear * (modeEmission[transport.mainMode] ?? 0);
 
   if (transport.mainMode === "own-car" && transport.carFuelPerWeek) {
-    const litres = f.bands.carFuelLitresPerWeek[transport.carFuelPerWeek] ?? 25;
-    naira += litres * 52 * f.prices.petrolPerLitre;
+    // Use ACTUAL fuel consumption reported — more accurate than km estimate
+    const litresPerWeek = f.bands.carFuelLitresPerWeek[transport.carFuelPerWeek] ?? 25;
+    const litresPerYear = litresPerWeek * 52;
+    kg += litresPerYear * f.emission.petrolPerLitre;  // 2.31 kg CO₂e/litre (IPCC)
+    naira += litresPerYear * f.prices.petrolPerLitre;
+  } else {
+    // Non-car modes: use mode-specific km/week estimate
+    const kmPerWeek = MODE_KM_PER_WEEK[transport.mainMode] ?? 0;
+    const modeEmission: Record<string, number> = {
+      "ride-hail": f.emission.ridehailPerKm,
+      "danfo-brt": f.emission.danfoPerKm,
+      "keke":      f.emission.kekePerKm,
+      "okada":     f.emission.okadaPerKm,
+      "walk":      0,
+    };
+    kg += kmPerWeek * 52 * (modeEmission[transport.mainMode] ?? 0);
   }
 
-  // Interstate travel
-  const interstateKm = f.bands.interstateTripFrequency[transport.interstateFrequency] ?? 0;
-  kg += interstateKm * 400 * f.emission.carPetrolPerKm; // 400km average trip
+  // Interstate travel (shared road, shared cost — use mid-range car factor)
+  const interstateTripsPerYear = f.bands.interstateTripFrequency[transport.interstateFrequency] ?? 0;
+  kg += interstateTripsPerYear * 400 * f.emission.carPetrolPerKm; // 400 km avg trip
 
-  // Flights
+  // Flights (domestic, incl. radiative forcing at 2× direct — IPCC RF factor)
   const flights = f.bands.flightsPerYear[transport.flightsPerYear] ?? 0;
-  kg += flights * 1200 * f.emission.domesticFlightPerKm; // 1200km average domestic
+  kg += flights * 1200 * f.emission.domesticFlightPerKm; // 1200 km avg domestic
 
   return { kg, naira };
 }
@@ -117,14 +127,20 @@ function calcCooking(cooking: CookingAnswers | undefined): { kg: number; naira: 
   return { kg, naira };
 }
 
-// --- Simple estimates for food/goods/waste ---
+// --- Food ---
+// Methodology: IPCC AR6 Ch5 + FAO FAOSTAT Nigeria
+// Baseline 400 kg CO₂e covers non-meat calories (grains, veg, eggs, fish, dairy)
+// typical for West African diet. Red meat added on top per frequency band.
+// Origin factor: local markets = 0.8× (less processing/transport); imported = 1.3×
+// Eating out factor: higher packaging, food waste, and supply chain overhead
 function calcFood(food: GreenPrintState["answers"]["food"]): { kg: number; naira: number } {
-  if (!food) return { kg: 1200, naira: 600000 }; // rough default for Phase 1
-  const meatKg = (f.bands.beefFrequency[food.redMeatFrequency] ?? 24) * f.emission.beefPerServing;
+  if (!food) return { kg: 900, naira: 450000 }; // ~0.9t default: typical Nigerian diet
+  const meatCo2 = (f.bands.beefFrequency[food.redMeatFrequency] ?? 52) * f.emission.beefPerServing;
+  const baseCo2 = 400; // non-meat diet baseline for Nigeria (kg CO₂e/yr)
   const originFactor = food.foodOrigin === "mostly-local" ? 0.8 : food.foodOrigin === "mostly-imported" ? 1.3 : 1.0;
   const eatOutFactor = food.eatingOutFrequency === "often" ? 1.3 : food.eatingOutFrequency === "sometimes" ? 1.1 : 1.0;
-  const kg = (meatKg * 500 + 400) * originFactor * eatOutFactor;
-  const naira = kg * 180;
+  const kg = (baseCo2 + meatCo2) * originFactor * eatOutFactor;
+  const naira = kg * 200; // ~₦200/kg CO₂e food cost proxy
   return { kg, naira };
 }
 

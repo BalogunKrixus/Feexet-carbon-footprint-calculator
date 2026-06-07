@@ -81,9 +81,9 @@ export const FACTORS = {
       "weekly": 4,
     },
     beefFrequency: {
-      "rarely": 4,
-      "few-week": 24,
-      "most-days": 52,
+      "rarely": 12,       // ~once a month (12 servings/yr)
+      "few-week": 104,    // ~twice a week (104 servings/yr)
+      "most-days": 260,   // ~5 days a week (260 servings/yr)
     },
     electronicsPerYear: {
       "none": 0,
