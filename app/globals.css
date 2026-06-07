@@ -1,13 +1,5 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Cal Sans";
-  src: url("/fonts/CalSans-SemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --color-navy: #093350;
   --color-deep-ocean: #04436A;
@@ -20,7 +12,7 @@
 }
 
 @theme inline {
-  --font-display: "Cal Sans", system-ui, sans-serif;
+  --font-display: var(--font-cal-sans), system-ui, sans-serif;
   --font-body: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
 
   --color-navy: #093350;
