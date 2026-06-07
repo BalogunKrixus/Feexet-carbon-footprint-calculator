@@ -56,6 +56,7 @@ export function LocationScreen({ onNext, onBack }: Props) {
             onChange={(val) => { setState(val); setCity(""); }}
             options={stateOptions}
             placeholder="Select your state…"
+            searchable
           />
         </div>
 

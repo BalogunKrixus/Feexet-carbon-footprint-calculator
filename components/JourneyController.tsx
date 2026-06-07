@@ -33,6 +33,11 @@ export function JourneyController() {
     useStore.persist.rehydrate();
   }, []);
 
+  // Scroll to top on every step change (mobile fix)
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [currentStep]);
+
   const stepIndex = STEP_ORDER.indexOf(currentStep);
 
   const goNext = () => {
