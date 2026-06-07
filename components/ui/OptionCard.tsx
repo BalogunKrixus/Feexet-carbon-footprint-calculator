@@ -1,9 +1,10 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 
 interface Props {
-  icon?: string;
+  icon?: React.ReactNode;
   label: string;
   selected?: boolean;
   onClick: () => void;
@@ -23,7 +24,11 @@ export function OptionCard({ icon, label, selected, onClick, multi }: Props) {
         }
       `}
     >
-      {icon && <span className="text-2xl flex-shrink-0">{icon}</span>}
+      {icon && (
+        <span className={`flex-shrink-0 ${selected ? "text-teal" : "text-off-white/50"}`}>
+          {icon}
+        </span>
+      )}
       <span className="font-body text-sm font-medium leading-snug flex-1">{label}</span>
       {multi && (
         <span className={`w-5 h-5 rounded flex-shrink-0 border-2 flex items-center justify-center text-xs

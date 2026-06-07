@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Leaf, UtensilsCrossed, Beef, ShoppingBasket, Package, ShoppingCart, Home, Utensils } from "lucide-react";
 import { useStore } from "@/store/store";
 import { StepLayout } from "@/components/ui/StepLayout";
 import { OptionCard } from "@/components/ui/OptionCard";
@@ -16,17 +17,17 @@ const MEAT_FREQ = [
   {
     value: "rarely",
     label: "Rarely, maybe once a month",
-    icon: "🥗",
+    icon: <Leaf size={18} />,
   },
   {
     value: "few-week",
     label: "A few times a week",
-    icon: "🍖",
+    icon: <UtensilsCrossed size={18} />,
   },
   {
     value: "most-days",
     label: "Most days",
-    icon: "🥩",
+    icon: <Beef size={18} />,
   },
 ] as const;
 
@@ -34,17 +35,17 @@ const FOOD_ORIGIN = [
   {
     value: "mostly-local",
     label: "Mostly local markets",
-    icon: "🧺",
+    icon: <ShoppingBasket size={18} />,
   },
   {
     value: "mostly-imported",
     label: "Mostly supermarkets or imported",
-    icon: "📦",
+    icon: <Package size={18} />,
   },
   {
     value: "mixed",
     label: "A mix of local markets and supermarkets",
-    icon: "🛒",
+    icon: <ShoppingCart size={18} />,
   },
 ] as const;
 
@@ -52,17 +53,17 @@ const EAT_OUT = [
   {
     value: "rarely",
     label: "Rarely",
-    icon: "🏠",
+    icon: <Home size={18} />,
   },
   {
     value: "sometimes",
     label: "Once or twice a week",
-    icon: "🍽️",
+    icon: <Utensils size={18} />,
   },
   {
     value: "often",
     label: "Most days",
-    icon: "🥡",
+    icon: <UtensilsCrossed size={18} />,
   },
 ] as const;
 

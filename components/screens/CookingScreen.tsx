@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Flame, Lamp, Layers, TreePine, Zap, Calendar, CalendarDays } from "lucide-react";
 import { useStore } from "@/store/store";
 import { StepLayout } from "@/components/ui/StepLayout";
 import { OptionCard } from "@/components/ui/OptionCard";
@@ -13,18 +14,18 @@ interface Props {
 }
 
 const MAIN_FUELS = [
-  { value: "gas-lpg", label: "Gas (LPG cylinder)", icon: "🔵" },
-  { value: "kerosene", label: "Kerosene stove", icon: "🏮" },
-  { value: "charcoal", label: "Charcoal", icon: "⬛" },
-  { value: "firewood", label: "Firewood", icon: "🪵" },
-  { value: "electric", label: "Electric cooker", icon: "⚡" },
+  { value: "gas-lpg", label: "Gas (LPG cylinder)", icon: <Flame size={18} /> },
+  { value: "kerosene", label: "Kerosene stove", icon: <Lamp size={18} /> },
+  { value: "charcoal", label: "Charcoal", icon: <Layers size={18} /> },
+  { value: "firewood", label: "Firewood", icon: <TreePine size={18} /> },
+  { value: "electric", label: "Electric cooker", icon: <Zap size={18} /> },
 ] as const;
 
 const REFILL_FREQ = [
-  { value: "rarely", label: "Rarely (every few months)", icon: "📅" },
-  { value: "monthly", label: "About once a month", icon: "🗓️" },
-  { value: "fortnightly", label: "Every two weeks", icon: "⚡" },
-  { value: "weekly", label: "Every week or more", icon: "🔥" },
+  { value: "rarely", label: "Rarely (every few months)", icon: <Calendar size={18} /> },
+  { value: "monthly", label: "About once a month", icon: <CalendarDays size={18} /> },
+  { value: "fortnightly", label: "Every two weeks", icon: <CalendarDays size={18} /> },
+  { value: "weekly", label: "Every week or more", icon: <Flame size={18} /> },
 ] as const;
 
 type MainFuel = CookingAnswers["mainFuel"];

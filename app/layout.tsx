@@ -25,6 +25,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        {/* Inline @font-face bypasses Turbopack CSS processing — most reliable way to load local fonts in Next.js 16 */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          @font-face {
+            font-family: "Cal Sans";
+            src: url("/fonts/CalSans-SemiBold.woff2") format("woff2");
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+          }
+        `}} />
       </head>
       <body className="min-h-full font-body bg-near-black text-off-white antialiased">
         {children}

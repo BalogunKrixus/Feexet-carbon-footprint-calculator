@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Car, Smartphone, Bus, Bike, PersonStanding, Droplets, Fuel, Building2, Route, Home, Plane, Globe } from "lucide-react";
 import { useStore } from "@/store/store";
 import { StepLayout } from "@/components/ui/StepLayout";
 import { OptionCard } from "@/components/ui/OptionCard";
@@ -13,30 +14,30 @@ interface Props {
 }
 
 const MAIN_MODES = [
-  { value: "own-car", label: "Own car", icon: "🚗" },
-  { value: "ride-hail", label: "Bolt / inDrive / Uber", icon: "📱" },
-  { value: "danfo-brt", label: "Danfo or BRT bus", icon: "🚌" },
-  { value: "keke", label: "Keke (tricycle)", icon: "🛺" },
-  { value: "okada", label: "Okada (motorbike)", icon: "🏍️" },
-  { value: "walk", label: "Mostly walk", icon: "🚶" },
+  { value: "own-car", label: "Own car", icon: <Car size={18} /> },
+  { value: "ride-hail", label: "Bolt / inDrive / Uber", icon: <Smartphone size={18} /> },
+  { value: "danfo-brt", label: "Danfo or BRT bus", icon: <Bus size={18} /> },
+  { value: "keke", label: "Keke (tricycle)", icon: <Car size={18} /> },
+  { value: "okada", label: "Okada (motorbike)", icon: <Bike size={18} /> },
+  { value: "walk", label: "Mostly walk", icon: <PersonStanding size={18} /> },
 ] as const;
 
 const CAR_FUEL = [
-  { value: "light", label: "Light (under 15L/week)", icon: "🪣" },
-  { value: "moderate", label: "Moderate (15 to 35L/week)", icon: "⛽" },
-  { value: "heavy", label: "Heavy (35L+ per week)", icon: "🛢️" },
+  { value: "light", label: "Light (under 15L/week)", icon: <Droplets size={18} /> },
+  { value: "moderate", label: "Moderate (15 to 35L/week)", icon: <Fuel size={18} /> },
+  { value: "heavy", label: "Heavy (35L+ per week)", icon: <Fuel size={18} /> },
 ] as const;
 
 const INTERSTATE = [
-  { value: "never", label: "Never or rarely", icon: "🏙️" },
-  { value: "sometimes", label: "Once or twice a month", icon: "🛣️" },
-  { value: "often", label: "Often (weekly)", icon: "🚀" },
+  { value: "never", label: "Never or rarely", icon: <Building2 size={18} /> },
+  { value: "sometimes", label: "Once or twice a month", icon: <Route size={18} /> },
+  { value: "often", label: "Often (weekly)", icon: <Route size={18} /> },
 ] as const;
 
 const FLIGHTS = [
-  { value: "none", label: "No flights", icon: "🏠" },
-  { value: "one-two", label: "1 to 2 flights", icon: "✈️" },
-  { value: "several", label: "3 or more flights", icon: "🌍" },
+  { value: "none", label: "No flights", icon: <Home size={18} /> },
+  { value: "one-two", label: "1 to 2 flights", icon: <Plane size={18} /> },
+  { value: "several", label: "3 or more flights", icon: <Globe size={18} /> },
 ] as const;
 
 export function TransportScreen({ onNext, onBack }: Props) {

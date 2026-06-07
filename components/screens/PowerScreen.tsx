@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Plug, Lightbulb, CloudSun, Sun, Zap, Battery, Factory, Droplets, Fuel } from "lucide-react";
 import { useStore } from "@/store/store";
 import { StepLayout } from "@/components/ui/StepLayout";
 import { OptionCard } from "@/components/ui/OptionCard";
@@ -13,23 +14,23 @@ interface Props {
 }
 
 const GRID_HOURS = [
-  { value: "almost-none", label: "Almost none (0 to 2 hrs)", icon: "🔌" },
-  { value: "a-few", label: "A few hours (2 to 5 hrs)", icon: "💡" },
-  { value: "half-day", label: "About half the day", icon: "🌤️" },
-  { value: "most-day", label: "Most of the day (10+ hrs)", icon: "☀️" },
+  { value: "almost-none", label: "Almost none (0 to 2 hrs)", icon: <Plug size={18} /> },
+  { value: "a-few", label: "A few hours (2 to 5 hrs)", icon: <Lightbulb size={18} /> },
+  { value: "half-day", label: "About half the day", icon: <CloudSun size={18} /> },
+  { value: "most-day", label: "Most of the day (10+ hrs)", icon: <Sun size={18} /> },
 ] as const;
 
 const GEN_TYPES = [
-  { value: "small-petrol", label: "Small petrol set (I pass my neighbour)", icon: "⚡" },
-  { value: "mid-petrol", label: "Midsize petrol generator", icon: "🔋" },
-  { value: "large-diesel", label: "Large diesel generator", icon: "🏭" },
+  { value: "small-petrol", label: "Small petrol set (I pass my neighbour)", icon: <Zap size={18} /> },
+  { value: "mid-petrol", label: "Midsize petrol generator", icon: <Battery size={18} /> },
+  { value: "large-diesel", label: "Large diesel generator", icon: <Factory size={18} /> },
 ] as const;
 
 const FUEL_BANDS = [
-  { value: "a-few", label: "A few litres (under 10L)", icon: "🪣" },
-  { value: "jerry-can", label: "A jerry can or two (10 to 40L)", icon: "🛢️" },
-  { value: "two-cans", label: "Two to four jerry cans (40 to 80L)", icon: "🛢️🛢️" },
-  { value: "drum", label: "A drum or more (80L+)", icon: "⛽" },
+  { value: "a-few", label: "A few litres (under 10L)", icon: <Droplets size={18} /> },
+  { value: "jerry-can", label: "A jerry can or two (10 to 40L)", icon: <Fuel size={18} /> },
+  { value: "two-cans", label: "Two to four jerry cans (40 to 80L)", icon: <Fuel size={18} /> },
+  { value: "drum", label: "A drum or more (80L+)", icon: <Fuel size={18} /> },
 ] as const;
 
 const SOLAR_COVERAGE = [
