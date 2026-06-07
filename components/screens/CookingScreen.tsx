@@ -57,7 +57,6 @@ export function CookingScreen({ onNext, onBack }: Props) {
         ← Back
       </button>
 
-      <div className="mb-2 text-2xl">🔥</div>
       <h2 className="font-display text-4xl text-off-white mb-6">What do you cook with?</h2>
 
       <div className="mb-6">

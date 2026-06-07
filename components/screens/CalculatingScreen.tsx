@@ -33,7 +33,7 @@ export function CalculatingScreen({ onNext }: Props) {
       setResult(result);
       clearInterval(interval);
       onNext();
-    }, 3000);
+    }, 1500);
 
     return () => {
       clearInterval(interval);

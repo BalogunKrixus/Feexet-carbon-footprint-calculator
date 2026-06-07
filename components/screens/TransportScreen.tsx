@@ -65,7 +65,6 @@ export function TransportScreen({ onNext, onBack }: Props) {
         ← Back
       </button>
 
-      <div className="mb-2 text-2xl">🚌</div>
       <h2 className="font-display text-4xl text-off-white mb-1">How do you get around,</h2>
       <h2 className="font-display text-4xl text-amber mb-6">{firstName}?</h2>
 

@@ -94,7 +94,6 @@ export function FoodScreen({ onNext, onBack }: Props) {
         ← Back
       </button>
 
-      <div className="mb-2 text-2xl">🍽️</div>
       <h2 className="font-display text-4xl text-off-white mb-1">What do you eat?</h2>
       <p className="font-body text-off-white/50 text-base mb-8">
         Red meat is the biggest food driver of emissions worldwide.

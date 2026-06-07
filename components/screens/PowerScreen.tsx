@@ -69,7 +69,6 @@ export function PowerScreen({ onNext, onBack }: Props) {
         ← Back
       </button>
 
-      <div className="mb-2 text-2xl">⚡</div>
       <h2 className="font-display text-4xl text-off-white mb-1">Let&apos;s talk power.</h2>
       <p className="font-body text-off-white/50 text-base mb-8">
         Be honest, most homes run more than one source.
